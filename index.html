@@ -40,39 +40,38 @@
             </b-form-group>
         </b-container>
     </div>
-</body>
 
-<!-- Start running your app -->
-<script>
-    window.app = new Vue({
-        el: '#app',
-        data: {
-            name: ''
-        },
-        computed: {
-            nameState() {
-                var params = "name=" + this.name;
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function () {
-                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                        if (xmlhttp.responseText == "success") {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-                xmlhttp.open("GET", "core/valid.php?" + params, true);
-                xmlhttp.send();
 
-            }
-        },
-        data() {
-            return {
+    <!-- Start running your app -->
+    <script type="text/javascript">
+        window.app = new Vue({
+            el: '#app',
+            data: {
                 name: ''
+            },
+            computed: {
+                nameState() {
+
+                    function get_data_from_url(url) {
+                        var http_req = new XMLHttpRequest();
+                        http_req.open("GET", url, false);
+                        http_req.send(null);
+                        return http_req.responseText;
+                    }
+                    var url = "core/valid.php?name=" + encodeURIComponent(this.name);
+                    var data_obj = JSON.parse(get_data_from_url(url));
+                    return (data_obj['status'] == "success") ? true : false;
+
+
+                }
+            },
+            data() {
+                return {
+                    name: ''
+                }
             }
-        }
-    })
-</script>
+        });
+    </script>
+</body>
 
 </html>
