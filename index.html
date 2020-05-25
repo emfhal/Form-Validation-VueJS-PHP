@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    <title>Form Validation - Vue.js + Bootstrap + PHP</title>
+
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+
+    <!-- Load polyfills to support older browsers -->
+    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver"></script>
+
+    <!-- Required scripts -->
+    <script src="//unpkg.com/vue@latest/dist/vue.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
+
+    <!-- jsdelivr cdn -->
+    <script src="//cdn.jsdelivr.net/npm/vee-validate@<3.0.0/dist/vee-validate.js"></script>
+    <!-- unpkg -->
+    <script src="//unpkg.com/vee-validate@<3.0.0"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <b-container>
+            <b-form-group horizontal :label-cols="4" description="Let us know your name." label="Enter your name">
+                <b-form-input id="input-live" v-model="name" :state="nameState"
+                    aria-describedby="input-live-help input-live-feedback" placeholder="Enter your name" trim>
+                </b-form-input>
+                <b-form-invalid-feedback id="input-live-feedback">
+                    Enter at least 3 letters (english only)
+                </b-form-invalid-feedback>
+            </b-form-group>
+        </b-container>
+    </div>
+</body>
+
+<!-- Start running your app -->
+<script>
+    window.app = new Vue({
+        el: '#app',
+        data: {
+            name: ''
+        },
+        computed: {
+            nameState() {
+                var params = "name=" + this.name;
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        if (xmlhttp.responseText == "success") {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+                xmlhttp.open("GET", "core/valid.php?" + params, true);
+                xmlhttp.send();
+
+            }
+        },
+        data() {
+            return {
+                name: ''
+            }
+        }
+    })
+</script>
+
+</html>
