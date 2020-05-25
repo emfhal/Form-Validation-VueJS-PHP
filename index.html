@@ -44,6 +44,13 @@
 
     <!-- Start running your app -->
     <script type="text/javascript">
+        function get_data_from_url(url) {
+            var http_req = new XMLHttpRequest();
+            http_req.open("GET", url, false);
+            http_req.send(null);
+            return http_req.responseText;
+        }
+
         window.app = new Vue({
             el: '#app',
             data: {
@@ -52,12 +59,7 @@
             computed: {
                 nameState() {
 
-                    function get_data_from_url(url) {
-                        var http_req = new XMLHttpRequest();
-                        http_req.open("GET", url, false);
-                        http_req.send(null);
-                        return http_req.responseText;
-                    }
+
                     var url = "core/valid.php?name=" + encodeURIComponent(this.name);
                     var data_obj = JSON.parse(get_data_from_url(url));
                     return (data_obj['status'] == "success") ? true : false;
